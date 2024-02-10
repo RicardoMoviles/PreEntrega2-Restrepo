@@ -1,6 +1,7 @@
 let montoDeInversion;
 let tiempoDeInversion;
 let interesEfectivoAnual;
+let mejorTasa;
 let tablaTasas = [
     [9.4, 9.5, 10.4, 10.5, 10.6, 10.75, 10,65, 10.25, 9.5, 9.2, 9.2, 9.2],
     [9.4, 9.5, 10.4, 10.5, 10.6, 10.75, 10,65, 10.25, 9.6, 9.3, 9.3, 9.3],
@@ -19,30 +20,39 @@ function asignarTexto (elemento, texto){
     elementoHTML.innerHTML = texto;
 }
 
-function buscarTasa (dias, monto){
-    let indiceDias;
-    let indiceMontos;
-    for (let i = 0; i < rangoDias.length; i++) {
-        if (dias>= rangoDias[i] && dias < rangoDias[i+1]) {
-            indiceDias = i;
-        }
-    }
-    for (let j = 0; j < rangoMontos.length; j++) {
-        if (monto>= rangoMontos[j] && monto < rangoMontos[j+1]) {
-            indiceMontos = j;
-        }
-    }
-    return tablaTasas[indiceMontos][indiceDias];
+function buscarFilaTasas(monto){
+    const filaTablaTasas = (elemento) => elemento <= monto 
+    return rangoMontos.findLastIndex(filaTablaTasas);
+}
 
+function buscarColumnaTasas(dias){
+    const columnaTablaTasas = (elemento) => elemento <= dias 
+    return rangoDias.findLastIndex(columnaTablaTasas);
+}
+
+function buscarTasa (dias, monto){
+    return tablaTasas[buscarFilaTasas(monto)][buscarColumnaTasas(dias)];
+}
+
+function buscarMejorTasa(monto){
+    tasasrespectivasMonto = tablaTasas.at(buscarFilaTasas(monto));
 }
 
 
 asignarTexto('#title-cdt','Simulador Rendimientos CDT');
 asignarTexto('#text-description-cdt', 'Por favor ingrese el valor y los meses a los cuales quiere abrir tu CDT');
 
-montoDeInversion =parseInt(prompt('Por favor ingrese el valor que quiere invertir'));
-tiempoDeInversion = parseInt(prompt('Por favor indique a cuantos días quiere su CDT'));
+function mensajesAlCliente(){
+    montoDeInversion =parseInt(prompt('Por favor ingrese el valor que quiere invertir (minimo 500)'));
+    tiempoDeInversion = parseInt(prompt('Por favor indique a cuantos días quiere su CDT (minimo 30 maximo 1799)'));
+    if(montoDeInversion < 500 || tiempoDeInversion <30) { 
+        alert("Ingresa valores validos");
+        mensajesAlCliente();
+    }    
+}
 
+mensajesAlCliente();
 interesEfectivoAnual = buscarTasa(tiempoDeInversion, montoDeInversion);
 console.log(interesEfectivoAnual);
+
 
