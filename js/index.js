@@ -1,5 +1,6 @@
 let montoDeInversion;
 let tiempoDeInversion;
+let interesEfectivoAnual;
 let tablaTasas = [
     [9.4, 9.5, 10.4, 10.5, 10.6, 10.75, 10,65, 10.25, 9.5, 9.2, 9.2, 9.2],
     [9.4, 9.5, 10.4, 10.5, 10.6, 10.75, 10,65, 10.25, 9.6, 9.3, 9.3, 9.3],
@@ -18,10 +19,30 @@ function asignarTexto (elemento, texto){
     elementoHTML.innerHTML = texto;
 }
 
+function buscarTasa (dias, monto){
+    let indiceDias;
+    let indiceMontos;
+    for (let i = 0; i < rangoDias.length; i++) {
+        if (dias>= rangoDias[i] && dias < rangoDias[i+1]) {
+            indiceDias = i;
+        }
+    }
+    for (let j = 0; j < rangoMontos.length; j++) {
+        if (monto>= rangoMontos[j] && monto < rangoMontos[j+1]) {
+            indiceMontos = j;
+        }
+    }
+    return tablaTasas[indiceMontos][indiceDias];
+
+}
+
 
 asignarTexto('#title-cdt','Simulador Rendimientos CDT');
 asignarTexto('#text-description-cdt', 'Por favor ingrese el valor y los meses a los cuales quiere abrir tu CDT');
 
 montoDeInversion =parseInt(prompt('Por favor ingrese el valor que quiere invertir'));
 tiempoDeInversion = parseInt(prompt('Por favor indique a cuantos días quiere su CDT'));
+
+interesEfectivoAnual = buscarTasa(tiempoDeInversion, montoDeInversion);
+console.log(interesEfectivoAnual);
 
