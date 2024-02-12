@@ -3,6 +3,7 @@ let tiempoDeInversion;
 let interesEfectivoAnual;
 let mejorTasa;
 let diasTasaMasAlta;
+let continuarSimulando;
 let tablaTasas = [
     [9.4, 9.5, 10.4, 10.5, 10.6, 10.75, 10.65, 10.25, 9.5, 9.2, 9.2, 9.2],
     [9.4, 9.5, 10.4, 10.5, 10.6, 10.75, 10.65, 10.25, 9.6, 9.3, 9.3, 9.3],
@@ -42,6 +43,19 @@ function buscarMejorTasa(monto){
     console.log(`La mejor tasa es de ${mejorTasa} entre ${rangoDias[diasTasaMasAlta]} y ${rangoDias[diasTasaMasAlta+1]-1} días`);
 }
 
+function calcularRendimiento(monto, dias){
+    let interes = buscarTasa(dias, monto);
+    let rendimientos = Math.round(((monto*interes)/100)*((dias*30)/360));
+    console.log(`Si inviertes ${monto} por ${dias} días`);
+    console.log(`Tu rendimiento será de ${rendimientos}`);
+
+    if(interes < mejorTasa){
+        buscarMejorTasa(monto);
+    }else if (interes == mejorTasa){
+        console.log("Puedes obtener la mayor tasa de interes con el tiempo escogido")
+    }
+}
+
 function mensajesAlCliente(){
     montoDeInversion =parseInt(prompt('Por favor ingrese el valor que quiere invertir (minimo 500)'));
     tiempoDeInversion = parseInt(prompt('Por favor indique a cuantos días quiere su CDT (minimo 30 maximo 1799)'));
@@ -51,6 +65,11 @@ function mensajesAlCliente(){
     }    
 }
 
+function volverASimular(){
+    let respuesta = prompt("Deseas volver a simular si/no").toLowerCase();
+    return respuesta;
+}
+
 
 
 
@@ -58,9 +77,14 @@ function mensajesAlCliente(){
 asignarTexto('#title-cdt','Simulador Rendimientos CDT');
 asignarTexto('#text-description-cdt', 'Por favor ingrese el valor y los meses a los cuales quiere abrir tu CDT');
 
-mensajesAlCliente();
-interesEfectivoAnual = buscarTasa(tiempoDeInversion, montoDeInversion);
-console.log(interesEfectivoAnual);
-buscarMejorTasa(montoDeInversion);
+do{
+    mensajesAlCliente();
+    interesEfectivoAnual = buscarTasa(tiempoDeInversion, montoDeInversion);
+    console.log(interesEfectivoAnual);
+    buscarMejorTasa(montoDeInversion);
+    calcularRendimiento(montoDeInversion, tiempoDeInversion); 
+    continuarSimulando = volverASimular();
+}while(continuarSimulando == "si");
+
 
 
