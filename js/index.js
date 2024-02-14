@@ -4,6 +4,16 @@ let interesEfectivoAnual;
 let mejorTasa;
 let diasTasaMasAlta;
 let continuarSimulando;
+
+class Cdt{
+    constructor(monto, dias, fechaInicio){
+        this.monto = monto;
+        this.dias = dias;
+        this.fechaInicio = fechaInicio;
+        //this.fechaFin = fechaFin;
+    }
+}
+
 let tablaTasas = [
     [9.4, 9.5, 10.4, 10.5, 10.6, 10.75, 10.65, 10.25, 9.5, 9.2, 9.2, 9.2],
     [9.4, 9.5, 10.4, 10.5, 10.6, 10.75, 10.65, 10.25, 9.6, 9.3, 9.3, 9.3],
@@ -70,6 +80,15 @@ function volverASimular(){
     return respuesta;
 }
 
+function fechaInicio(){
+    const  fechaInicio = new Date();
+    return fechaInicio.getDate() + "-"+ (fechaInicio.getMonth()+1) + "-" +fechaInicio.getFullYear();;
+}
+
+// function fechaFin(tiempo){
+//     const fechaFin = fechaInicio().getDatetiempo.getMonth()+mpo;
+//     console.log(fechaFin);
+// }
 
 
 
@@ -83,7 +102,10 @@ do{
     console.log(interesEfectivoAnual);
     buscarMejorTasa(montoDeInversion);
     calcularRendimiento(montoDeInversion, tiempoDeInversion); 
-    continuarSimulando = volverASimular();
+    console.log(`Fecha de Inicio CDT ${fechaInicio()}`);
+    let cdt = new Cdt(montoDeInversion, tiempoDeInversion, fechaInicio());
+    console.log(cdt);
+    continuarSimulando = volverASimular();  
 }while(continuarSimulando == "si");
 
 
